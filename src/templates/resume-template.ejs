@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Resume</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body{
+      font-family: Inter;
+      width:100%;
+      height:100%;
+      zoom: 1
+    }
+  </style>
+</head>
+<body>
+  <div class="aspect-[210/297] h-fit w-full bg-white text-black" id="resume">
+    <div class="text-center text-2xl uppercase"><%= firstName %> <%= lastName %></div>
+    <div class="flex gap-3 text-sm">
+      <% if (email) { %>
+        <div><%= email %></div>
+      <% } %>
+      <% if (phone) { %>
+        <div><%= phone %></div>
+      <% } %>
+    </div>
+
+    <main class="space-y-2">
+
+      <% if (summary) { %>
+        <section>
+          <div class="text-lg border-b">Summary</div>
+          <div class="text-sm"><%= summary %></div>
+        </section>
+      <% } %>
+
+      <% fieldsOrder.forEach(function(field) { %>
+        <% if (field === 'educations' && educations.length) { %>
+          <section>
+            <div class="text-lg border-b">Education</div>
+            <div class="space-y-1">
+              <% educations.forEach(function(education) { %>
+                <div>
+                  <div><%= education.degree %></div>
+                  <div class="flex justify-between">
+                    <div class="text-sm"><%= education.school %></div>
+                    <div class="text-xs font-semibold"><%= education.startDate %> - <%= education.endDate %></div>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (field === 'workExperiences' && workExperiences.length) { %>
+          <section>
+            <div class="text-lg border-b">Work Experience</div>
+            <div class="space-y-1">
+              <% workExperiences.forEach(function(experience) { %>
+                <div>
+                  <div><%= experience.position %></div>
+                  <div class="flex justify-between">
+                    <div class="text-sm"><%= experience.company %></div>
+                    <div class="text-xs font-semibold"><%= experience.startDate %> - <%= experience.endDate %></div>
+                  </div>
+                  <div class="text-xs"><%= experience.description %></div>
+                </div>
+              <% }); %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (field === 'projects' && projects.length) { %>
+          <section>
+            <div class="text-lg border-b">Projects</div>
+            <div class="space-y-1">
+              <% projects.forEach(function(project) { %>
+                <div>
+                  <div class="flex justify-between">
+                    <div class="text-sm"><%= project.title %></div>
+                    <div class="text-xs font-semibold"><%= project.startDate %> - <%= project.endDate || "Present" %></div>
+                  </div>
+                  <div class="text-xs"><%= project.description %></div>
+                </div>
+              <% }); %>
+            </div>
+          </section>
+        <% } %>
+
+        <% if (field === 'skills' && skills.length) { %>
+          <section>
+            <div class="text-lg border-b">Skills</div>
+            <div class="text-xs text-justify">
+              <%= skills.join(", ") %>
+            </div>
+          </section>
+        <% } %>
+      <% }); %>
+    </main>
+  </div>
+</body>
+</html>
