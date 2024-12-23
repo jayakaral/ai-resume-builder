@@ -21,7 +21,8 @@ const Template = ({
         educations = [],
         skills = [],
         projects = [],
-        fieldsOrder
+        fieldsOrder,
+        customSections = []
     } = resumeData;
 
     return (
@@ -46,6 +47,20 @@ const Template = ({
                         {field === "skills" && SkillsSection(skills)}
                         {field === "projects" && ProjectSection(projects)}
                     </React.Fragment>
+                ))}
+
+                {customSections.map((section, index) => (
+                    <Section title={section.title} key={index}>
+                        {section.data.map((d, index) => (
+                            <div key={index} className="mt-1">
+                                <div className="flex justify-between">
+                                    <div className="text-sm">{d.title}</div>
+                                    <div className="text-xs font-semibold">{d.startDate} - {d.endDate}</div>
+                                </div>
+                                <div className="text-xs">{d.description}</div>
+                            </div>
+                        ))}
+                    </Section>
                 ))}
             </main>
         </div>

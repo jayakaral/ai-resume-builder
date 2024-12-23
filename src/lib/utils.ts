@@ -36,6 +36,7 @@ export const mapToValues = (data: ResumePrismaVal | null) => {
     })) || [],
     summary: data.summary || undefined,
     fieldsOrder: data.fieldsOrder.length < 3 ? ["educations", "workExperiences", "skills"] : data.fieldsOrder,
+    customSections: data.customSections || [],
   } satisfies ResumeValues;
 
   return resume;

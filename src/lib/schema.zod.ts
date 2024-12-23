@@ -75,10 +75,21 @@ export const projectSchema = z.object({
 });
 export type ProjectValues = z.infer<typeof projectSchema>;
 
-export const customSectionSchema = z.object({
-    title: z.string(),
-    fields: z.array(z.string()),
+const customFieldSchema = z.object({
+    title: optionalString,
+    startDate: optionalString,
+    endDate: optionalString,
+    description: optionalString,
 });
+
+export const customSectionSchema = z.object({
+    customSections: z.array(z.object({
+        title: z.string(),
+        data: z.array(customFieldSchema),
+    })),
+})
+
+export type CustomSectionValues = z.infer<typeof customSectionSchema>;
 
 export const resumeSchema = z.object({
     ...generalInfoSchema.shape,
@@ -88,6 +99,7 @@ export const resumeSchema = z.object({
     ...skillsSchema.shape,
     ...summarySchema.shape,
     ...projectSchema.shape,
+    ...customSectionSchema.shape,
 });
 
 export type ResumeValues = z.infer<typeof resumeSchema> & {

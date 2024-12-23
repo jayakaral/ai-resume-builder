@@ -19,5 +19,5 @@ export const steps: {
         { title: "Education", key: "education", component: EducationForm },
         { title: "Skills", key: "skills", component: SkillsForm },
         { title: "Summary", key: "summary", component: SummaryForm },
-        // { title: "Custom", key: "custom", component: CustomForm }
+        { title: "Custom", key: "custom", component: CustomForm }
     ];
