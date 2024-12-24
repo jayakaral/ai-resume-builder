@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { ResumeValues } from "@/lib/schema.zod"
 
 export const saveResume = async (resumeData: ResumeValues) => {
-    const { id, educations, workExperiences, projects, ...values } = resumeData;
+    const { id, educations, workExperiences, projects, customSections, ...values } = resumeData;
 
     const { user } = await auth();
     if (!user) {
@@ -31,16 +31,16 @@ export const saveResume = async (resumeData: ResumeValues) => {
                     deleteMany: {},
                     create: educations?.map(edu => ({
                         ...edu,
-                        startDate: new Date(),
-                        endDate: new Date()
+                        startDate: edu.startDate ? new Date(edu.startDate) : undefined,
+                        endDate: edu.endDate ? new Date(edu.endDate) : undefined
                     }))
                 },
                 workExperiences: {
                     deleteMany: {},
                     create: workExperiences?.map(work => ({
                         ...work,
-                        startDate: new Date(),
-                        endDate: new Date()
+                        startDate: work.startDate ? new Date(work.startDate) : undefined,
+                        endDate: work.endDate ? new Date(work.endDate) : undefined
                     }))
                 },
             },
@@ -54,15 +54,15 @@ export const saveResume = async (resumeData: ResumeValues) => {
             educations: {
                 create: educations?.map(edu => ({
                     ...edu,
-                    startDate: new Date(),
-                    endDate: new Date()
+                    startDate: edu.startDate ? new Date(edu.startDate) : undefined,
+                    endDate: edu.endDate ? new Date(edu.endDate) : undefined
                 }))
             },
             workExperiences: {
                 create: workExperiences?.map(work => ({
                     ...work,
-                    startDate: new Date(),
-                    endDate: new Date()
+                    startDate: work.startDate ? new Date(work.startDate) : undefined,
+                    endDate: work.endDate ? new Date(work.endDate) : undefined
                 }))
             },
         },

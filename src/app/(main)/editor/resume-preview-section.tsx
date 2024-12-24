@@ -49,6 +49,7 @@ const ResumePreviewSection: React.FC<ResumePreviewSectionProps> = ({
                 <ResumePreview
                     resumeData={resumeData}
                     className="max-w-2xl shadow-md"
+                    contentRef={contentRef}
                 />
             </div>
         </div>

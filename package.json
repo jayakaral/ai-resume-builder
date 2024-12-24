@@ -39,6 +39,7 @@
     "pdf-lib": "^1.17.1",
     "puppeteer": "^23.11.0",
     "react": "^19.0.0",
+    "react-datepicker": "^7.5.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.1",
     "react-to-print": "^3.0.2",

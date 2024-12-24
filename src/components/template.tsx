@@ -1,5 +1,6 @@
 "use client"
 import { ResumeValues } from '@/lib/schema.zod';
+import { showMonthYear } from '@/lib/utils';
 import React from 'react'
 
 interface Props {
@@ -51,11 +52,11 @@ const Template = ({
 
                 {customSections.map((section, index) => (
                     <Section title={section.title} key={index}>
-                        {section.data.map((d, index) => (
+                        {section.items.map((d, index) => (
                             <div key={index} className="mt-1">
                                 <div className="flex justify-between">
                                     <div className="text-sm">{d.title}</div>
-                                    <div className="text-xs font-semibold">{d.startDate} - {d.endDate}</div>
+                                    <div className="text-xs font-semibold">{showMonthYear(d.startDate)} - {showMonthYear(d.endDate)}</div>
                                 </div>
                                 <div className="text-xs">{d.description}</div>
                             </div>
@@ -98,7 +99,7 @@ const EducationSection = (educations: ResumeValues["educations"]) => {
                     <div className="">{education.degree}</div>
                     <div className="flex justify-between">
                         <div className="text-sm">{education.school}</div>
-                        <div className="text-xs font-semibold">{education.startDate} - {education.endDate}</div>
+                        <div className="text-xs font-semibold">{showMonthYear(education.startDate)} - {showMonthYear(education.endDate)}</div>
                     </div>
                 </div>
             ))}
@@ -115,7 +116,7 @@ const WorkExperienceSection = (workExperiences: ResumeValues["workExperiences"])
                     <div className="">{experience.position}</div>
                     <div className="flex justify-between">
                         <div className="text-sm">{experience.company}</div>
-                        <div className="text-xs font-semibold">{experience.startDate} - {experience.endDate}</div>
+                        <div className="text-xs font-semibold">{showMonthYear(experience.startDate)} - {showMonthYear(experience.endDate)}</div>
                     </div>
                     <div className="text-xs">{experience.description}</div>
                 </div>
@@ -132,7 +133,7 @@ const ProjectSection = (projects: ResumeValues["projects"]) => {
                 <div key={index} className="">
                     <div className="flex justify-between">
                         <div className="text-sm">{project.title}</div>
-                        <div className="text-xs font-semibold">{project.startDate} - {project.endDate ?? "Present"}</div>
+                        <div className="text-xs font-semibold">{showMonthYear(project.startDate)} - {showMonthYear(project.endDate) ?? "Present"}</div>
                     </div>
                     <div className="text-xs">{project.description}</div>
                 </div>

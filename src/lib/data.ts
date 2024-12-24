@@ -175,4 +175,6 @@ export const RESUME = {
     description: undefined,
     city: "Jaipur",
     country: "India",
+    customSections: [],
+    fieldsOrder: []
 } satisfies ResumeValues;

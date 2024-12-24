@@ -13,7 +13,7 @@ const CustomForm = ({ resumeData, setResumeData }: EditorFormProps) => {
         },
     });
 
-    const { append, fields, remove, move } = useFieldArray({
+    const { append, fields, remove } = useFieldArray({
         control: form.control,
         name: 'customSections',
     });
@@ -27,7 +27,7 @@ const CustomForm = ({ resumeData, setResumeData }: EditorFormProps) => {
             const customSections = values.customSections?.filter(s => s !== undefined)
                 .map(s => ({
                     title: s.title as string,
-                    data: s.data?.filter(d => d !== undefined) ?? [],
+                    items: s.items?.filter(d => d !== undefined) ?? [],
                 })) ?? [];
             setResumeData(prev => ({
                 ...prev,
@@ -37,8 +37,6 @@ const CustomForm = ({ resumeData, setResumeData }: EditorFormProps) => {
         return unsubscribe;
     }, [form, setResumeData]);
 
-    console.clear()
-    console.log(JSON.stringify(resumeData.customSections, null, 2))
 
     return (
         <div className="mx-auto max-w-xl space-y-6">
@@ -48,7 +46,7 @@ const CustomForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                     onClick={() => {
                         append({
                             title: 'Untitled',
-                            data: [],
+                            items: [],
                         });
                     }}
                 >

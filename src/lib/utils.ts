@@ -24,15 +24,15 @@ export const mapToValues = (data: ResumePrismaVal | null) => {
     educations: data.educations?.map(edu => ({
       degree: edu.degree || undefined,
       school: edu.school || undefined,
-      startDate: edu.startDate?.toISOString().split("T")[0],
-      endDate: edu.endDate?.toISOString().split("T")[0],
+      startDate: edu.startDate?.toISOString(),
+      endDate: edu.endDate?.toISOString(),
     })) || [],
     workExperiences: data.workExperiences?.map(exp => ({
       company: exp.company || undefined,
       description: exp.description || undefined,
-      endDate: exp.endDate?.toISOString().split("T")[0],
+      endDate: exp.endDate?.toISOString(),
       position: exp.position || undefined,
-      startDate: exp.startDate?.toISOString().split("T")[0],
+      startDate: exp.startDate?.toISOString(),
     })) || [],
     summary: data.summary || undefined,
     fieldsOrder: data.fieldsOrder.length < 3 ? ["educations", "workExperiences", "skills"] : data.fieldsOrder,
@@ -40,4 +40,12 @@ export const mapToValues = (data: ResumePrismaVal | null) => {
   } satisfies ResumeValues;
 
   return resume;
+}
+
+export const showMonthYear = (date: Date | string | undefined) => {
+  if (!date) return "";
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
 }

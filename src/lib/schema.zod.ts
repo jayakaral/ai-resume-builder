@@ -85,7 +85,7 @@ const customFieldSchema = z.object({
 export const customSectionSchema = z.object({
     customSections: z.array(z.object({
         title: z.string(),
-        data: z.array(customFieldSchema),
+        items: z.array(customFieldSchema),
     })),
 })
 

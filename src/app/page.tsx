@@ -2,7 +2,6 @@ import logo from "@/assets/logo.png";
 import resumePreview from "@/assets/resume-preview.jpg";
 import Template from "@/components/template";
 import { Button } from "@/components/ui/button";
-import { RESUME } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 

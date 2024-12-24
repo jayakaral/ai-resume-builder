@@ -7,13 +7,14 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { CustomSectionValues } from '@/lib/schema.zod';
-import { cn } from '@/lib/utils';
+import { cn, showMonthYear } from '@/lib/utils';
 import { GripVertical, Trash } from 'lucide-react';
 import React from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Textarea } from '@/components/ui/textarea';
+import DatePicker from '@/components/date-picker';
 
 type SortableItemProps = {
     id: string;
@@ -65,7 +66,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
     }, [isExpanded]);
 
     const { title, startDate, endDate } = form.watch(
-        `customSections.${sectionIndex}.data.${index}`
+        `customSections.${sectionIndex}.items.${index}`
     );
 
     return (
@@ -102,10 +103,10 @@ const SortableItem: React.FC<SortableItemProps> = ({
                     onMouseLeave={() => setIsHovered(false)}
                 >
                     <p className="truncate">
-                        {title || 'Untitled'}
+                        {title || '(Unspecified)'}
                     </p>
                     <p className="text-sm">
-                        {startDate} {startDate && endDate && '-'} {endDate}
+                        {showMonthYear(startDate)} {startDate && endDate && '-'} {showMonthYear(endDate)}
                     </p>
                 </div>
 
@@ -132,7 +133,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
             >
                 <FormField
                     control={form.control}
-                    name={`customSections.${sectionIndex}.data.${index}.title`}
+                    name={`customSections.${sectionIndex}.items.${index}.title`}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Title</FormLabel>
@@ -147,16 +148,16 @@ const SortableItem: React.FC<SortableItemProps> = ({
                 <div className="grid grid-cols-2 gap-4">
                     <FormField
                         control={form.control}
-                        name={`customSections.${sectionIndex}.data.${index}.startDate`}
+                        name={`customSections.${sectionIndex}.items.${index}.startDate`}
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Start Date</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="date"
-                                        placeholder="Start date"
-                                        value={field.value?.slice(0, 10) || ''}
+                                    <DatePicker
+                                        selected={field.value}
+                                        placeholder='Start Date'
+                                        endDate={endDate}
+                                        onChange={(date) => field.onChange(date)}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -165,16 +166,16 @@ const SortableItem: React.FC<SortableItemProps> = ({
                     />
                     <FormField
                         control={form.control}
-                        name={`customSections.${sectionIndex}.data.${index}.endDate`}
+                        name={`customSections.${sectionIndex}.items.${index}.endDate`}
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>End Date</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="date"
-                                        placeholder="End date"
-                                        value={field.value?.slice(0, 10) || ''}
+                                    <DatePicker
+                                        selected={field.value}
+                                        placeholder='End Date'
+                                        startDate={startDate}
+                                        onChange={(date) => field.onChange(date)}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -185,7 +186,7 @@ const SortableItem: React.FC<SortableItemProps> = ({
 
                 <FormField
                     control={form.control}
-                    name={`customSections.${sectionIndex}.data.${index}.description`}
+                    name={`customSections.${sectionIndex}.items.${index}.description`}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Description</FormLabel>

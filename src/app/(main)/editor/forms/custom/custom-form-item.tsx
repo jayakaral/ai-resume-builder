@@ -30,7 +30,7 @@ interface CustomFormItemProps {
 const CustomFormItem: FC<CustomFormItemProps> = ({ id, index, remove, form }) => {
   const { fields, append, move, remove: Remove } = useFieldArray({
     control: form.control,
-    name: `customSections.${index}.data`,
+    name: `customSections.${index}.items`,
   });
 
 

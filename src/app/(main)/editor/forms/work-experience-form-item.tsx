@@ -4,10 +4,11 @@ import React from 'react'
 import { UseFormReturn } from 'react-hook-form';
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { cn } from '@/lib/utils'
+import { cn, showMonthYear } from '@/lib/utils'
 import { GripVertical, Trash } from 'lucide-react'
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import DatePicker from '@/components/date-picker';
 
 interface WorkExperienceItemProps {
     id: string;
@@ -96,7 +97,7 @@ const WorkExperienceItem = ({
                         {position} {company && `at ${company}`}
                     </p>
                     <p className="text-sm">
-                        {startDate} {startDate && endDate && '-'} {endDate}
+                        {showMonthYear(startDate)} {startDate && endDate && '-'} {showMonthYear(endDate)}
                     </p>
                 </div>
 
@@ -156,10 +157,11 @@ const WorkExperienceItem = ({
                             <FormItem>
                                 <FormLabel>Start date</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="date"
-                                        value={field.value?.slice(0, 10)}
+                                    <DatePicker
+                                        selected={field.value}
+                                        placeholder='Start Date'
+                                        endDate={form.watch(`workExperiences.${index}.endDate`)}
+                                        onChange={(date) => field.onChange(date)}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -173,10 +175,11 @@ const WorkExperienceItem = ({
                             <FormItem>
                                 <FormLabel>End date</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="date"
-                                        value={field.value?.slice(0, 10)}
+                                    <DatePicker
+                                        selected={field.value}
+                                        placeholder='End Date'
+                                        startDate={form.watch(`workExperiences.${index}.startDate`)}
+                                        onChange={(date) => field.onChange(date)}
                                     />
                                 </FormControl>
                                 <FormMessage />

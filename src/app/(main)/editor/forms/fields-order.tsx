@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm, useFieldArray, UseFormReturn } from 'react-hook-form';
 import { CSS } from '@dnd-kit/utilities';
 import {
@@ -51,6 +51,22 @@ const FieldsOrder = ({ resumeData, setResumeData }: EditorFormProps) => {
             move(oldIndex, newIndex);
         }
     };
+
+
+    useEffect(() => {
+        const { unsubscribe } = form.watch(async (values) => {
+            const isValid = await form.trigger();
+            if (isValid) {
+                setResumeData((prev) => ({
+                    ...prev,
+                    title: values.title,
+                    description: values.description,
+                    fieldsOrder: values.fieldsOrder as string[],
+                }));
+            }
+        });
+        return unsubscribe;
+    }, [form, setResumeData]);
 
     return (
 

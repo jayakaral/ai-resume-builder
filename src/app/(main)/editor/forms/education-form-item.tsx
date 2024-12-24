@@ -1,12 +1,13 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { EducationValues } from '@/lib/schema.zod'
-import { cn } from '@/lib/utils'
+import { cn, showMonthYear } from '@/lib/utils'
 import { GripVertical, Trash } from 'lucide-react'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import DatePicker from '@/components/date-picker'
 
 type EducationItemProps = {
     id: string;
@@ -94,7 +95,7 @@ const EducationItem = ({
                         {degree} {school && degree && `at`} {school}
                     </p>
                     <p className="text-sm">
-                        {startDate} {startDate && endDate && '-'} {endDate}
+                        {showMonthYear(startDate)} {startDate && endDate && '-'} {showMonthYear(endDate)}
                     </p>
                 </div>
 
@@ -154,10 +155,11 @@ const EducationItem = ({
                             <FormItem>
                                 <FormLabel>Start date</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="date"
-                                        value={field.value?.slice(0, 10)}
+                                    <DatePicker
+                                        selected={field.value}
+                                        onChange={(date) => field.onChange(date)}
+                                        endDate={form.watch(`educations.${index}.endDate`)}
+                                        placeholder='Start Date'
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -171,10 +173,11 @@ const EducationItem = ({
                             <FormItem>
                                 <FormLabel>End date</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        {...field}
-                                        type="date"
-                                        value={field.value?.slice(0, 10)}
+                                    <DatePicker
+                                        selected={field.value}
+                                        onChange={(date) => field.onChange(date)}
+                                        startDate={form.watch(`educations.${index}.startDate`)}
+                                        placeholder='End Date'
                                     />
                                 </FormControl>
                                 <FormMessage />
