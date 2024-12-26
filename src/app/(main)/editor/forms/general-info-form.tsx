@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { generalInfoSchema, GeneralInfoValues } from '@/lib/schema.zod';
 import { EditorFormProps } from '@/lib/types';
 import FieldsOrder from './fields-order';
+import ResumeEnhancerForm from './resume-enhancer';
 
 
 function GeneralInfoForm({ resumeData, setResumeData }: EditorFormProps) {
@@ -51,7 +52,7 @@ function GeneralInfoForm({ resumeData, setResumeData }: EditorFormProps) {
                             <FormItem>
                                 <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                    <Input {...field} placeholder="My cool resume" autoFocus />
+                                    <Input {...field} placeholder="My cool resume" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -75,6 +76,8 @@ function GeneralInfoForm({ resumeData, setResumeData }: EditorFormProps) {
                         resumeData={resumeData}
                         setResumeData={setResumeData}
                     />
+
+                    {/* <ResumeEnhancerForm /> */}
                 </form>
             </Form>
         </div>

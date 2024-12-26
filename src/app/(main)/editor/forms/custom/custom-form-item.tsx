@@ -96,7 +96,7 @@ const CustomFormItem: FC<CustomFormItemProps> = ({ id, index, remove, form }) =>
       </div>
 
       <Form {...form}>
-        <form className="space-y-4">
+        <form className="space-y-4" suppressHydrationWarning>
           <DndContext onDragEnd={handleDragEnd} onDragStart={() => setExpandedIndex(null)} sensors={sensors}>
             <SortableContext items={fields} strategy={verticalListSortingStrategy}>
               {fields.map((field, i) => (

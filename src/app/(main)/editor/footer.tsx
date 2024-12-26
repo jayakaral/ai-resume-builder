@@ -3,6 +3,7 @@ import React from 'react'
 import { steps } from './steps';
 import { CircleCheck, FileUserIcon, PenLineIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface FooterProps {
     currentStep: string;
@@ -68,9 +69,9 @@ const Footer: React.FC<FooterProps> = ({
                     {showSmResumePreview ? <PenLineIcon /> : <FileUserIcon />}
                 </Button>
                 <div className="flex items-center gap-3">
-                    {/* <Button variant="secondary" asChild>
+                    <Button variant="secondary" asChild>
                         <Link href="/resumes">Close</Link>
-                    </Button> */}
+                    </Button>
                     <p
                         className={cn(
                             "text-muted-foreground flex items-center gap-1",

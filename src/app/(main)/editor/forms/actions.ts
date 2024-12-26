@@ -2,8 +2,8 @@
 
 import { auth } from "@/lib/auth";
 import { gemeini1_5Flash } from "@/lib/models";
-import { ResumeValues } from "@/lib/schema.zod";
-import { generateText } from 'ai'
+import { resumeSchema, ResumeValues } from "@/lib/schema.zod";
+import { generateObject, generateText } from 'ai'
 
 
 
@@ -91,6 +91,57 @@ export const generateWorkExperience = async (description: string) => {
             model: gemeini1_5Flash,
             system: systemMessage,
             prompt: userMessage
+        });
+
+        const text = response.text;
+        console.log(text)
+        return text.trim();
+    } catch (error) {
+        console.error(error);
+        throw new Error("Something went wrong. Please try again.");
+    }
+}
+
+
+export const enhaceResume = async (jobDescription: string, resume: ResumeValues) => {
+    const { user } = await auth();
+
+    if (!user) {
+        throw new Error("You must be logged in to generate a summary");
+    }
+
+    const systemMessage = `
+    You are a professional resume generator AI. Your task is to enhance the provided resume with the job description. 
+    Your output should include the most relevant skills, experiences, and achievements from the job description.
+    `;
+    const userMessage = `
+    Please enhance this resume with the job description:
+    
+    Job Description: ${jobDescription}
+    
+    Resume:
+
+    ${JSON.stringify(resume, null, 2)}
+    `;
+
+    try {
+        // const response = await generateObject({
+        //     model: gemeini1_5Flash,
+        //     system: systemMessage,
+        //     prompt: userMessage,
+        //     schema: resumeSchema,
+        //     output: "object"
+        // })
+
+        // console.log(response.object)
+        // return response.object;
+
+        const response = await generateText({
+            model: gemeini1_5Flash,
+            system: systemMessage,
+            prompt: userMessage,
+            maxSteps: 3,
+            maxTokens: 128000
         });
 
         const text = response.text;
