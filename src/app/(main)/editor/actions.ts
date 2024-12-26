@@ -43,6 +43,19 @@ export const saveResume = async (resumeData: ResumeValues) => {
                         endDate: work.endDate ? new Date(work.endDate) : undefined
                     }))
                 },
+                customSections: {
+                    deleteMany: {},
+                    create: customSections?.map(section => ({
+                        ...section,
+                        items: {
+                            create: section.items.map(item => ({
+                                ...item,
+                                startDate: item.startDate ? new Date(item.startDate) : undefined,
+                                endDate: item.endDate ? new Date(item.endDate) : undefined
+                            }))
+                        }
+                    }))
+                }
             },
         });
     }
@@ -65,6 +78,18 @@ export const saveResume = async (resumeData: ResumeValues) => {
                     endDate: work.endDate ? new Date(work.endDate) : undefined
                 }))
             },
+            customSections: {
+                create: customSections?.map(section => ({
+                    ...section,
+                    items: {
+                        create: section.items.map(item => ({
+                            ...item,
+                            startDate: item.startDate ? new Date(item.startDate) : undefined,
+                            endDate: item.endDate ? new Date(item.endDate) : undefined
+                        }))
+                    }
+                }))
+            }
         },
     });
 }

@@ -8,7 +8,7 @@ interface EditorFormProps {
 
 
 const useResume = create<EditorFormProps>((set) => ({
-    resumeData: {},
+    resumeData: {} as ResumeValues,
     setResumeData: (data: unknown) => {
         if (typeof data === "function") {
             set((state) => {

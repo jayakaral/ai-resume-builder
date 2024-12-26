@@ -96,6 +96,23 @@
           </section>
         <% } %>
       <% }); %>
+
+      <% customSections.forEach(function(section){%>
+        <section>
+          <div class="text-lg border-b"><%=section.title%></div>
+          <div class="space-y-1">
+            <% section.items.forEach(function(item) { %>
+              <div>
+                <div class="flex justify-between">
+                  <div class="text-sm"><%= item.title %></div>
+                  <div class="text-xs font-semibold"><%= item.startDate %> - <%= item.endDate || "Present" %></div>
+                </div>
+                <div class="text-xs"><%= item.description %></div>
+              </div>
+            <% }); %>
+          </div>
+        </section>
+      <% }); %>
     </main>
   </div>
 </body>

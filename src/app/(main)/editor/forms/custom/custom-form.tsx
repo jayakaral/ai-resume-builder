@@ -45,7 +45,7 @@ const CustomForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                     type="button"
                     onClick={() => {
                         append({
-                            title: 'Untitled',
+                            title: "",
                             items: [],
                         });
                     }}

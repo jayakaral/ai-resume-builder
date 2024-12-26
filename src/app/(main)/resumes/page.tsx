@@ -26,6 +26,11 @@ export default async function Page() {
             include: {
                 educations: true,
                 workExperiences: true,
+                customSections: {
+                    include: {
+                        items: true,
+                    }
+                }
             },
         }),
         prisma.resume.count({

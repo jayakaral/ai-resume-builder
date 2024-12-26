@@ -25,7 +25,12 @@ export default async function Page({ searchParams }: PageProps) {
             where: { id: resumeId, userId: user.id },
             include: {
                 workExperiences: true,
-                educations: true
+                educations: true,
+                customSections: {
+                    include: {
+                        items: true,
+                    },
+                }
             },
         })
         : null;

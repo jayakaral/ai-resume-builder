@@ -78,7 +78,7 @@ const CustomFormItem: FC<CustomFormItemProps> = ({ id, index, remove, form }) =>
         ) : (
           <>
             <h2 className="text-2xl font-semibold">
-              {form.watch(`customSections.${index}.title`) || 'Untitled Section'}
+              {form.watch(`customSections.${index}.title`) || 'Untitled'}
             </h2>
 
             <Pencil

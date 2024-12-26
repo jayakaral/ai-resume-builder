@@ -10,5 +10,10 @@ export type ResumePrismaVal = Prisma.ResumeGetPayload<{
     include: {
         educations: true;
         workExperiences: true;
+        customSections: {
+            include: {
+                items: true;
+            };
+        }
     };
 }>

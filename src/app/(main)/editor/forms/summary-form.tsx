@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { EditorFormProps } from '@/lib/types'
+import GenerateSummaryButton from "./generate-summary-button";
 
 
 const SummaryForm = ({ resumeData, setResumeData }: EditorFormProps) => {
@@ -50,19 +51,21 @@ const SummaryForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                             <FormItem>
                                 <FormLabel className="sr-only">Professional summary</FormLabel>
                                 <FormControl>
-                                    <Textarea
-                                        {...field}
-                                        placeholder="A brief, engaging text about yourself"
-                                        rows={6}
-                                    />
+                                    <div className="flex flex-col items-end">
+                                        <Textarea
+                                            {...field}
+                                            placeholder="A brief, engaging text about yourself"
+                                            rows={6}
+                                        />
+                                        <GenerateSummaryButton
+                                            resumeData={resumeData}
+                                            onSuccess={(summary) =>
+                                                form.setValue("summary", summary)
+                                            }
+                                        />
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
-                                {/* <GenerateSummaryButton
-                                    resumeData={resumeData}
-                                    onSummaryGenerated={(summary) =>
-                                        form.setValue("summary", summary)
-                                    }
-                                /> */}
                             </FormItem>
                         )}
                     />

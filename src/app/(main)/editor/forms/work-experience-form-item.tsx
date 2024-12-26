@@ -9,6 +9,7 @@ import { GripVertical, Trash } from 'lucide-react'
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import DatePicker from '@/components/date-picker';
+import GenerateWorkExpButton from './generate-work-exp-btn';
 
 interface WorkExperienceItemProps {
     id: string;
@@ -198,7 +199,12 @@ const WorkExperienceItem = ({
                         <FormItem>
                             <FormLabel>Description</FormLabel>
                             <FormControl>
-                                <Textarea {...field} rows={6} />
+                                <div className="flex flex-col items-end">
+                                    <GenerateWorkExpButton
+                                        onSuccess={(description) => field.onChange(description)}
+                                    />
+                                    <Textarea {...field} rows={6} />
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>

@@ -36,7 +36,15 @@ export const mapToValues = (data: ResumePrismaVal | null) => {
     })) || [],
     summary: data.summary || undefined,
     fieldsOrder: data.fieldsOrder.length < 3 ? ["educations", "workExperiences", "skills"] : data.fieldsOrder,
-    customSections: data.customSections || [],
+    customSections: data.customSections?.map(section => ({
+      title: section.title || "",
+      items: section.items.map(item => ({
+        title: item.title || undefined,
+        description: item.description || undefined,
+        startDate: item.startDate?.toISOString(),
+        endDate: item.endDate?.toISOString(),
+      }))
+    })) || [],
   } satisfies ResumeValues;
 
   return resume;
@@ -49,3 +57,5 @@ export const showMonthYear = (date: Date | string | undefined) => {
     year: "numeric",
   });
 }
+
+export const MM_TO_PX = 3.7795275591;
