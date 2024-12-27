@@ -1,46 +1,25 @@
 import React, { useEffect } from 'react'
 import { useForm, useFieldArray, UseFormReturn } from 'react-hook-form';
 import { CSS } from '@dnd-kit/utilities';
-import {
-    DndContext,
-    DragEndEvent,
-    KeyboardSensor,
-    PointerSensor,
-    useSensor,
-    useSensors,
-} from '@dnd-kit/core';
-import {
-    SortableContext,
-    sortableKeyboardCoordinates,
-    useSortable,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { DragEndEvent } from '@dnd-kit/core';
+import { useSortable } from '@dnd-kit/sortable';
 import { cn } from '@/lib/utils';
 import { GripVertical } from 'lucide-react';
 import { generalInfoSchema, GeneralInfoValues } from '@/lib/schema.zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { EditorFormProps } from '@/lib/types';
+import DndSortableContext from '@/components/dnd-sortable-context';
 
-const FieldsOrder = ({ resumeData, setResumeData }: EditorFormProps) => {
+interface FieldsOrderProps {
+    form: UseFormReturn<GeneralInfoValues>;
+}
 
-    const form = useForm<GeneralInfoValues>({
-        resolver: zodResolver(generalInfoSchema),
-        defaultValues: {
-            fieldsOrder: resumeData.fieldsOrder,
-        },
-    });
+const FieldsOrder = ({ form }: FieldsOrderProps) => {
 
     const { fields, move } = useFieldArray({
         control: form.control,
         name: "fieldsOrder" as never,
     });
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
@@ -52,46 +31,26 @@ const FieldsOrder = ({ resumeData, setResumeData }: EditorFormProps) => {
         }
     };
 
-
-    useEffect(() => {
-        const { unsubscribe } = form.watch(async (values) => {
-            const isValid = await form.trigger();
-            if (isValid) {
-                setResumeData((prev) => ({
-                    ...prev,
-                    title: values.title,
-                    description: values.description,
-                    fieldsOrder: values.fieldsOrder as string[],
-                }));
-            }
-        });
-        return unsubscribe;
-    }, [form, setResumeData]);
-
     return (
 
-        <div className='pt-2'>
-            <p className='my-2 text-sm'>Fields Order</p>
-            <DndContext
+        <div className='space-y-4'>
+            <h3 className="text-lg font-semibold text-center my-2">Fields Order</h3>
+            <DndSortableContext
+                items={fields}
                 onDragEnd={handleDragEnd}
-                sensors={sensors}>
-                <SortableContext
-                    items={fields}
-                    strategy={verticalListSortingStrategy}
-                >
-                    <ul className="space-y-2">
-                        {fields.map((field, index) => (
-                            <SortableItem
-                                key={field.id}
-                                id={field.id}
-                                field={field}
-                                index={index}
-                                form={form}
-                            />
-                        ))}
-                    </ul>
-                </SortableContext>
-            </DndContext>
+            >
+                <ul className="space-y-2">
+                    {fields.map((field, index) => (
+                        <SortableItem
+                            key={field.id}
+                            id={field.id}
+                            field={field}
+                            index={index}
+                            form={form}
+                        />
+                    ))}
+                </ul>
+            </DndSortableContext>
         </div>
     )
 }

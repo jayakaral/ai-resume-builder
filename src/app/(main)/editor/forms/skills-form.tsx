@@ -1,24 +1,29 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Delete } from "lucide-react";
+import { Delete, Plus } from "lucide-react";
 import { EditorFormProps } from '@/lib/types'
+import { useFieldArray, useForm } from 'react-hook-form';
+import { SkillsValues } from '@/lib/schema.zod';
+import { Form } from '@/components/ui/form';
+import DndSortableContext from '@/components/dnd-sortable-context';
+import { DragEndEvent } from '@dnd-kit/core';
+import SkillItem from './skill-item';
 
 const SkillsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
-    const handleAddSkill = useCallback((e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const skill = formData.get("skill") as string;
-        if (!skill) return;
+    const form = useForm<SkillsValues>({
+        defaultValues: {
+            skills: resumeData.skills || [],
+        }
+    });
 
-        setResumeData(prev => ({
-            ...prev,
-            skills: [...new Set([...(prev.skills || []), skill])],
-        }));
+    const { fields, append, remove, move } = useFieldArray({
+        control: form.control,
+        name: "skills",
+    });
 
-        e.currentTarget.reset();
-    }, [setResumeData]);
+    const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);
 
     const handleDeleteSkill = useCallback((skillToRemove: string) => {
         setResumeData(prev => ({
@@ -26,6 +31,28 @@ const SkillsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
             skills: prev.skills?.filter((skill) => skill !== skillToRemove),
         }))
     }, [setResumeData]);
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over) return;
+        if (active.id !== over.id) {
+            const oldIndex = fields.findIndex((field) => field.id === active.id);
+            const newIndex = fields.findIndex((field) => field.id === over.id);
+            move(oldIndex, newIndex);
+        }
+    };
+
+    useEffect(() => {
+        const { unsubscribe } = form.watch(async (values) => {
+            const isValid = await form.trigger();
+            if (!isValid) return;
+            setResumeData(prev => ({
+                ...prev,
+                skills: values.skills?.filter((skill) => skill !== undefined) || [],
+            }));
+        });
+        return unsubscribe;
+    }, [form, setResumeData]);
 
 
     return (
@@ -35,36 +62,41 @@ const SkillsForm = ({ resumeData, setResumeData }: EditorFormProps) => {
                 <p className="text-sm text-muted-foreground">What are you good at?</p>
             </div>
 
-            <form className="flex items-center" onSubmit={handleAddSkill}>
-                <label className="sr-only">Skills</label>
-                <div className="flex-1 flex gap-3">
-                    <Input
-                        name="skill"
-                        placeholder="e.g. React.js, Node.js, graphic design, ..."
-                    />
-                    <Button type="submit">Add</Button>
-                </div>
-            </form>
-
-            {resumeData.skills?.length ? (
-                <div className="flex flex-wrap gap-2 mt-4 justify-stretch select-none">
-                    {resumeData.skills.map((skill, index) => (
-                        <div
-                            key={index}
-                            className="flex items-center px-4 py-2 border rounded-md bg-gray-100 text-sm font-medium dark:text- black dark:bg-gray-800"
+            <Form {...form}>
+                <form className="space-y-3">
+                    <DndSortableContext
+                        items={fields}
+                        onDragEnd={handleDragEnd}
+                        onDragStart={() => setExpandedIndex(null)}
+                    >
+                        {fields.map((field, index) => (
+                            <SkillItem
+                                key={field.id}
+                                id={field.id}
+                                form={form}
+                                index={index}
+                                remove={remove}
+                                isExpanded={expandedIndex === index}
+                                setExpandedIndex={setExpandedIndex}
+                            />
+                        ))}
+                    </DndSortableContext>
+                    <div className="flex justify-center">
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                append({
+                                    skill: '',
+                                    level: "Expert"
+                                })
+                                setExpandedIndex(fields.length)
+                            }}
                         >
-                            <span>{skill}</span>
-                            <button
-                                type="button"
-                                onClick={() => handleDeleteSkill(skill)}
-                                className="text-gray-500 hover:text-red-600 ml-2"
-                            >
-                                <Delete size={16} />
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            ) : null}
+                            <Plus /> Add Skill
+                        </Button>
+                    </div>
+                </form>
+            </Form>
         </div>
     );
 };

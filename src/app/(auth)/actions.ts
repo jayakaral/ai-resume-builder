@@ -3,7 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { hash, verify } from "@node-rs/argon2";
 import prisma from "@/lib/prisma";
-import { createSession } from "@/lib/auth";
+import { auth, createSession, invalidateSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 
 export const signIn = async (email: string, password: string) => {
@@ -89,4 +90,12 @@ export const signUp = async (name: string, email: string, password: string) => {
         console.log(error)
         return { error: 'Error creating user' }
     }
+}
+
+export const signOut = async () => {
+    const { session } = await auth();
+    if (!session) return;
+    await invalidateSession(session.id);
+    revalidatePath('/', 'layout');
+    redirect('/sign-in');
 }

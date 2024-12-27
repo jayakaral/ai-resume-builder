@@ -36,7 +36,7 @@ export default function SignUpPage() {
     async function onSubmit(data: SignUpFormData) {
         const result = await signUp(data.name, data.email, data.password);
         if (!result.error) {
-            redirect("/");
+            redirect("/resumes");
         } else {
             console.error("Sign-up failed:", result.error);
         }

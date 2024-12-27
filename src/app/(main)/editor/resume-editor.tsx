@@ -39,7 +39,6 @@ const ResumeEditor = ({ resume }: Props) => {
         setData(resumeData);
     }, [resumeData, setData]);
 
-
     return (
         <div className="flex grow flex-col noscrollbar">
             <header className='text-center px-3 py-4 border-b space-y-1'>

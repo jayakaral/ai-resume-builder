@@ -6,6 +6,13 @@ export const generalInfoSchema = z.object({
     title: optionalString,
     description: optionalString,
     fieldsOrder: z.array(z.string()),
+    margins: z.object({
+        top: z.number().default(40),
+        bottom: z.number().default(40),
+        left: z.number().default(40),
+        right: z.number().default(40),
+        unit: z.enum(["px", "mm", "cm"]).default("px"),
+    })
 });
 export type GeneralInfoValues = z.infer<typeof generalInfoSchema>;
 
@@ -51,7 +58,10 @@ export const educationSchema = z.object({
 export type EducationValues = z.infer<typeof educationSchema>;
 
 export const skillsSchema = z.object({
-    skills: z.array(z.string().trim()).optional(),
+    skills: z.array(z.object({
+        skill: optionalString,
+        level: optionalString,
+    })).optional(),
 });
 export type SkillsValues = z.infer<typeof skillsSchema>;
 
@@ -91,6 +101,7 @@ export const customSectionSchema = z.object({
 
 export type CustomSectionValues = z.infer<typeof customSectionSchema>;
 
+
 export const resumeSchema = z.object({
     ...generalInfoSchema.shape,
     ...personalInfoSchema.shape,
@@ -99,7 +110,7 @@ export const resumeSchema = z.object({
     ...skillsSchema.shape,
     ...summarySchema.shape,
     ...projectSchema.shape,
-    ...customSectionSchema.shape,
+    ...customSectionSchema.shape
 });
 
 export type ResumeValues = z.infer<typeof resumeSchema> & {

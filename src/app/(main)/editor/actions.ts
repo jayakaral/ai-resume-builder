@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { ResumeValues } from "@/lib/schema.zod"
 
 export const saveResume = async (resumeData: ResumeValues) => {
-    const { id, educations, workExperiences, projects, customSections, ...values } = resumeData;
+    const { id, skills, educations, workExperiences, projects, customSections, ...values } = resumeData;
 
     const { user } = await auth();
     if (!user) {
@@ -27,6 +27,10 @@ export const saveResume = async (resumeData: ResumeValues) => {
             where: { id },
             data: {
                 ...values,
+                skills: {
+                    deleteMany: {},
+                    create: skills
+                },
                 educations: {
                     deleteMany: {},
                     create: educations?.map(edu => ({
@@ -64,6 +68,9 @@ export const saveResume = async (resumeData: ResumeValues) => {
         data: {
             ...values,
             userId: user.id,
+            skills: {
+                create: skills
+            },
             educations: {
                 create: educations?.map(edu => ({
                     ...edu,

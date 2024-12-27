@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 import ResumeItem from "./resume-item";
 import CreateResumeButton from "./create-resume-btn";
+import { resumeDataInclude } from "@/lib/types";
+import { canCreateResume } from "@/lib/permissions";
 
 export const metadata: Metadata = {
     title: "Your resumes",
@@ -23,15 +25,7 @@ export default async function Page() {
             orderBy: {
                 updatedAt: "desc",
             },
-            include: {
-                educations: true,
-                workExperiences: true,
-                customSections: {
-                    include: {
-                        items: true,
-                    }
-                }
-            },
+            include: resumeDataInclude
         }),
         prisma.resume.count({
             where: {
@@ -44,8 +38,7 @@ export default async function Page() {
     return (
         <main className="mx-auto w-full max-w-7xl space-y-6 px-3 py-6">
             <CreateResumeButton
-                // canCreate={canCreateResume(subscriptionLevel, totalCount)}
-                canCreate={true}
+                canCreate={canCreateResume(totalCount)}
             />
             <div className="space-y-1">
                 <h1 className="text-3xl font-bold">Your resumes</h1>

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import puppeteer from 'puppeteer';
+import chromium from '@sparticuz/chromium-min';
+import puppeteer from 'puppeteer-core';
 import ejs from 'ejs';
 import path from 'path';
 import { ResumeValues } from '@/lib/schema.zod';
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { workExperiences, educations, customSections, ...values } = resumeData;
+    const { workExperiences, educations, customSections, margins, ...values } = resumeData;
 
     const data = {
         ...values,
@@ -42,18 +43,24 @@ export async function POST(req: Request) {
 
 
     try {
-        // Path to your EJS template
         const templatePath = path.join(process.cwd(), 'src', 'templates', 'resume-template.ejs');
 
-        // Render the EJS template with the provided data
         const html = await ejs.renderFile(templatePath, data);
 
         // return new NextResponse(html, { headers: { 'Content-Type': 'text/html' } });
 
         // Launch Puppeteer to generate the PDF
+        // const browser = await puppeteer.launch({
+        //     headless: true, // Set false if debugging
+        //     args: ['--no-sandbox', '--disable-setuid-sandbox'], // Required for some hosting platforms
+        // });
+
         const browser = await puppeteer.launch({
-            headless: true, // Set false if debugging
-            args: ['--no-sandbox', '--disable-setuid-sandbox'], // Required for some hosting platforms
+            // args: isLocal ? puppeteer.defaultArgs() : chromium.args,
+            args: [...chromium.args, '--hide-scrollbars', '--disable-web-security', '--no-sandbox', '--disable-setuid-sandbox'],
+            defaultViewport: chromium.defaultViewport,
+            executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath('https://github.com/Sparticuz/chromium/releases/download/v131.0.1/chromium-v131.0.1-pack.tar'),
+            headless: chromium.headless,
         });
 
         const page = await browser.newPage();
@@ -62,16 +69,15 @@ export async function POST(req: Request) {
             format: 'A4',
             printBackground: true,
             margin: {
-                top: '0.6cm',
-                right: '0.6cm',
-                bottom: '0.6cm',
-                left: '0.6cm',
+                top: `${margins.top}${margins.unit}`,
+                bottom: `${margins.bottom}${margins.unit}`,
+                left: `${margins.left}${margins.unit}`,
+                right: `${margins.right}${margins.unit}`,
             },
         });
 
         await browser.close();
 
-        // Return the PDF as a response
         return new NextResponse(pdfBuffer, {
             headers: {
                 'Content-Type': 'application/pdf',

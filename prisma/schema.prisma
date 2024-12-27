@@ -9,20 +9,67 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String    @unique
-  password  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  sessions  Session[]
-  resumes   Resume[]
+  id           String         @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String         @unique
+  password     String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  sessions     Session[]
+  resumes      Resume[]
+  Subscription Subscription[]
+}
+
+enum SubscriptionStatus {
+  Active
+  Inactive
+  Canceled
+}
+
+model Subscription {
+  id            String              @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String              @map("user_id") @db.ObjectId
+  planId        String              @db.ObjectId
+  status        SubscriptionStatus?
+  startDate     DateTime?           @map("start_date")
+  endDate       DateTime?           @map("end_date")
+  paymentMethod String?             @map("payment_method")
+  transactionId String?             @map("transaction_id")
+  autoRenew     Boolean             @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("subscriptions")
+}
+
+enum PlanType {
+  Monthly
+  Yearly
+}
+
+model Plan {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String?
+  price       Float
+  type        PlanType
+
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("plans")
 }
 
 model Session {
   mongoId   String   @id @default(auto()) @map("_id") @db.ObjectId
   id        String   @unique
-  userId    String   @db.ObjectId
+  userId    String   @map("user_id") @db.ObjectId
   token     String
   expiresAt DateTime
   createdAt DateTime @default(now())
@@ -30,13 +77,25 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Resume {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @db.ObjectId
+enum MarginUnit {
+  px
+  cm
+  mm
+}
 
+type Margin {
+  top    Int        @default(40)
+  right  Int        @default(40)
+  bottom Int        @default(40)
+  left   Int        @default(40)
+  unit   MarginUnit @default(px)
+}
+
+model Resume {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
   title       String?
   description String?
-
   firstName   String?  @map("first_name")
   lastName    String?  @map("last_name")
   jobTitle    String?  @map("job_title")
@@ -44,20 +103,43 @@ model Resume {
   country     String?
   phone       String?
   email       String?
-  skills      String[]
+  summary     String?
   fieldsOrder String[] @map("fields_order")
 
-  workExperiences WorkExperience[]
-  educations      Education[]
-  summary         String?
+  margins Margin
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  createdAt      DateTime        @default(now()) @map("created_at")
-  updatedAt      DateTime        @updatedAt @map("updated_at")
-  customSections CustomSection[]
+  customSections  CustomSection[]
+  courses         Courses[]
+  languages       Languages[]
+  skills          Skill[]
+  workExperiences WorkExperience[]
+  educations      Education[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("resumes")
+}
+
+enum SkillLevel {
+  Novice
+  Beginner
+  Intermediate
+  Advanced
+  Expert
+}
+
+model Skill {
+  id       String      @id @default(auto()) @map("_id") @db.ObjectId
+  skill    String?
+  level    SkillLevel? @default(Expert)
+  resumeId String      @db.ObjectId
+  resume   Resume      @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 }
 
 model WorkExperience {
@@ -121,4 +203,40 @@ model CustomSectionItem {
   customSection CustomSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
 
   @@map("custom_section_items")
+}
+
+model Courses {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  resumeId    String    @db.ObjectId
+  title       String?
+  institution String?
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("courses")
+}
+
+enum Level {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+model Languages {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  resumeId String  @db.ObjectId
+  language String?
+  level    Level?  @default(Advanced)
+
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("languages")
 }

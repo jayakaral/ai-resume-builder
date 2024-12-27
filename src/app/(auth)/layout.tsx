@@ -16,7 +16,7 @@ const Layout = async ({
 
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-300">
+        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900">
             {children}
         </div>
     )

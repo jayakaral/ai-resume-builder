@@ -28,7 +28,7 @@ const useAutoSave = (resumeData: ResumeValues) => {
             try {
                 const newData = structuredClone(debouncedResumeData);
                 const updatedResume = await saveResume(newData);
-                console.log('updatedResume', updatedResume);
+                console.log('updatedResume');
                 setLastSavedData(newData);
                 setResumeId(updatedResume.id)
 

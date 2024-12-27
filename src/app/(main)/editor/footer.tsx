@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import { steps } from './steps';
-import { CircleCheck, FileUserIcon, PenLineIcon } from 'lucide-react';
+import { CircleCheck, Download, FileUserIcon, PenLineIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useResume } from '@/hooks';
 
 interface FooterProps {
     currentStep: string;
@@ -27,16 +28,30 @@ const Footer: React.FC<FooterProps> = ({
     const nextStep = steps.find((_, index) => steps[index - 1]?.key === currentStep)?.key;
 
     const handleNextStep = () => {
-        if (nextStep) {
-            setCurrentStep(nextStep);
-        }
+        if (nextStep) setCurrentStep(nextStep);
     }
 
     const handlePreviousStep = () => {
-        if (previousStep) {
-            setCurrentStep(previousStep);
-        }
+        if (previousStep) setCurrentStep(previousStep);
     }
+
+    const { resumeData } = useResume();
+
+    const downloadPdf = async () => {
+        const pdfBlob = await fetch('/api/generate-pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ resumeData }),
+        }).then(res => res.blob());
+        const url = URL.createObjectURL(pdfBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'resume.pdf';
+        a.click();
+    }
+
 
     return (
         <footer className='w-full border-t px-3 py-4 select-none'>
@@ -68,6 +83,17 @@ const Footer: React.FC<FooterProps> = ({
                 >
                     {showSmResumePreview ? <PenLineIcon /> : <FileUserIcon />}
                 </Button>
+
+
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={downloadPdf}
+                    title="Download resume"
+                >
+                    <Download />
+                </Button>
+
                 <div className="flex items-center gap-3">
                     <Button variant="secondary" asChild>
                         <Link href="/resumes">Close</Link>

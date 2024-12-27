@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Plus, Trash, Pencil } from 'lucide-react';
 import SortableItem from './sortable-item';
 import { Input } from '@/components/ui/input';
+import DndSortableContext from '@/components/dnd-sortable-context';
 
 interface CustomFormItemProps {
   id: string;
@@ -97,22 +98,25 @@ const CustomFormItem: FC<CustomFormItemProps> = ({ id, index, remove, form }) =>
 
       <Form {...form}>
         <form className="space-y-4" suppressHydrationWarning>
-          <DndContext onDragEnd={handleDragEnd} onDragStart={() => setExpandedIndex(null)} sensors={sensors}>
-            <SortableContext items={fields} strategy={verticalListSortingStrategy}>
-              {fields.map((field, i) => (
-                <SortableItem
-                  key={field.id}
-                  id={field.id}
-                  form={form}
-                  index={i}
-                  sectionIndex={index}
-                  remove={() => Remove(i)}
-                  isExpanded={expandedIndex === i}
-                  setExpandedIndex={setExpandedIndex}
-                />
-              ))}
-            </SortableContext>
-          </DndContext>
+          <DndSortableContext
+            items={fields}
+            onDragEnd={handleDragEnd}
+            onDragStart={() => setExpandedIndex(null)}
+          >
+
+            {fields.map((field, i) => (
+              <SortableItem
+                key={field.id}
+                id={field.id}
+                form={form}
+                index={i}
+                sectionIndex={index}
+                remove={() => Remove(i)}
+                isExpanded={expandedIndex === i}
+                setExpandedIndex={setExpandedIndex}
+              />
+            ))}
+          </DndSortableContext>
           <div className="flex ml-4">
             <Button
               type="button"

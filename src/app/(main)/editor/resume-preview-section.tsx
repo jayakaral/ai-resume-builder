@@ -40,7 +40,7 @@ const ResumePreviewSection: React.FC<ResumePreviewSectionProps> = ({
 
     return (
         <div className={cn("group relative hidden w-full md:flex md:w-1/2 flex-col", className)}>
-            <div className="flex gap-3">
+            <div className="gap-3 hidden">
                 <Button onClick={() => reactToPrintFn()}>Print</Button>
                 <Button onClick={() => printPdf(1)}>Resume</Button>
                 <Button onClick={() => printPdf(0)}>Generate</Button>

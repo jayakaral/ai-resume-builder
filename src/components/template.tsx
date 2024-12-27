@@ -40,7 +40,7 @@ const Template = ({
         endDate: showMonthYear(project.endDate),
     }));
 
-    const customSections = resumeData.customSections.map(section => ({
+    const customSections = resumeData.customSections?.map(section => ({
         ...section,
         items: section.items.map(item => ({
             ...item,
@@ -74,7 +74,7 @@ const Template = ({
                     </React.Fragment>
                 ))}
 
-                {customSections.map((section, index) => (
+                {customSections?.map((section, index) => (
                     <Section title={section.title} key={index}>
                         {section.items.map((d, index) => (
                             <div key={index} className="mt-1">
@@ -171,7 +171,7 @@ const SkillsSection = (skills: ResumeValues["skills"]) => {
     return (
         <Section title="Skills">
             <div className="text-xs text-justify">
-                {skills.join(", ")}
+                {skills.map(s => s.skill).filter(Boolean).join(", ")}
             </div>
         </Section>
     )

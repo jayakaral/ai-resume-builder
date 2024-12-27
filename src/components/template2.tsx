@@ -143,7 +143,7 @@ const Template2 = ({
                         {field === "skills" && skills.length > 0 && (
                             <>
                                 <Text style={styles.sectionTitle}>Skills</Text>
-                                <Text style={styles.skillsText}>{skills.join(', ')}</Text>
+                                <Text style={styles.skillsText}>{skills.map(s => s.skill).filter(Boolean).join(', ')}</Text>
                             </>
                         )}
 

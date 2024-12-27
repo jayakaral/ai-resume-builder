@@ -111,10 +111,7 @@ const generatePDF = async (resumeData: ResumeValues) => {
     // Skills Section
     if (resumeData.skills?.length) {
         drawSectionTitle("Skills");
-        resumeData.skills.forEach((skill: string) => {
-            ensureSpace();
-            drawBulletText(skill);
-        });
+        drawText(resumeData.skills.map((skill) => skill.skill).filter(Boolean).join(", "));
         cursorY -= 20;
     }
 

@@ -6,20 +6,9 @@ import { Plus } from 'lucide-react'
 import React, { useEffect } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import WorkExperienceItem from './work-experience-form-item'
-import {
-    DndContext,
-    DragEndEvent,
-    KeyboardSensor,
-    PointerSensor,
-    useSensor,
-    useSensors,
-} from '@dnd-kit/core';
-import {
-    SortableContext,
-    sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { DragEndEvent } from '@dnd-kit/core';
 import { EditorFormProps } from '@/lib/types'
+import DndSortableContext from '@/components/dnd-sortable-context'
 
 const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
 
@@ -36,13 +25,6 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
     });
 
     const [expandedIndex, setExpandedIndex] = React.useState<number | null>(null);
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-        })
-    );
 
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
@@ -77,26 +59,23 @@ const WorkExperienceForm = ({ resumeData, setResumeData }: EditorFormProps) => {
             </div>
             <Form {...form}>
                 <form className="space-y-3">
-                    <DndContext
+                    <DndSortableContext
+                        items={fields}
                         onDragEnd={handleDragEnd}
-                        sensors={sensors}>
-                        <SortableContext
-                            items={fields}
-                            strategy={verticalListSortingStrategy}
-                        >
-                            {fields.map((field, index) => (
-                                <WorkExperienceItem
-                                    key={field.id}
-                                    id={field.id}
-                                    form={form}
-                                    index={index}
-                                    remove={remove}
-                                    isExpanded={expandedIndex === index}
-                                    setExpandedIndex={setExpandedIndex}
-                                />
-                            ))}
-                        </SortableContext>
-                    </DndContext>
+                        onDragStart={() => setExpandedIndex(null)}
+                    >
+                        {fields.map((field, index) => (
+                            <WorkExperienceItem
+                                key={field.id}
+                                id={field.id}
+                                form={form}
+                                index={index}
+                                remove={remove}
+                                isExpanded={expandedIndex === index}
+                                setExpandedIndex={setExpandedIndex}
+                            />
+                        ))}
+                    </DndSortableContext>
                     <div className="flex justify-center">
                         <Button
                             type="button"

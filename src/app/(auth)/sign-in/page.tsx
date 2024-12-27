@@ -29,7 +29,7 @@ export default function SignInPage() {
     async function onSubmit(data: SignInFormData) {
         const result = await signIn(data.email, data.password);
         if (!result.error) {
-            redirect("/");
+            redirect("/resumes");
         } else {
             console.error("Sign-in failed:", result.error);
         }

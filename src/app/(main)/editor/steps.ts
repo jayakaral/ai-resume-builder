@@ -1,6 +1,6 @@
 import { EditorFormProps } from "@/lib/types";
 import EducationForm from "./forms/education-form";
-import GeneralInfoForm from "./forms/general-info-form";
+import GeneralInfoForm from "./forms/general/general-info-form";
 import PersonalInfoForm from "./forms/personal-info-form";
 import SkillsForm from "./forms/skills-form";
 import SummaryForm from "./forms/summary-form";

@@ -1,10 +1,10 @@
 "use client";
 
 import logo from "@/assets/logo.png";
-import { User2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "./theme-toggle";
+import UserButton from "./user-button";
 
 export default function Navbar() {
 
@@ -25,7 +25,7 @@ export default function Navbar() {
                 </Link>
                 <div className="flex items-center gap-3">
                     <ThemeToggle />
-                    <User2 />
+                    <UserButton />
                 </div>
             </div>
         </header>

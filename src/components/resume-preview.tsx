@@ -24,7 +24,7 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
     //         <Template2 />
     //     </PDFViewer>
     // )
-
+    const { margins } = resumeData;
     return (
         <div
             className={cn(
@@ -35,9 +35,13 @@ const ResumePreview: React.FC<ResumePreviewProps> = ({
         >
 
             <div
-                className={cn("space-y-6 p-10", !width && "invisible")}
+                className={cn("space-y-6", !width && "invisible")}
                 style={{
                     zoom: (1 / 794) * width,
+                    paddingTop: `${margins.top}${margins.unit}`,
+                    paddingBottom: `${margins.bottom}${margins.unit}`,
+                    paddingLeft: `${margins.left}${margins.unit}`,
+                    paddingRight: `${margins.right}${margins.unit}`,
                 }}
                 ref={contentRef}
                 id="resumeContent"

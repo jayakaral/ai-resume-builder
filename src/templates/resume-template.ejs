@@ -15,7 +15,7 @@
 </head>
 <body>
   <div class="aspect-[210/297] h-fit w-full bg-white text-black" id="resume">
-    <div class="text-center text-2xl uppercase"><%= firstName %> <%= lastName %></div>
+    <div class="text-center text-2xl uppercase"><%= firstName %> <%= lastName||'' %></div>
     <div class="flex gap-3 text-sm">
       <% if (email) { %>
         <div><%= email %></div>
@@ -91,7 +91,7 @@
           <section>
             <div class="text-lg border-b">Skills</div>
             <div class="text-xs text-justify">
-              <%= skills.join(", ") %>
+              <%= skills.map(s=>s.skill).filter(Boolean).join(", ") %>
             </div>
           </section>
         <% } %>
