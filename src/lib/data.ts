@@ -1,6 +1,6 @@
 import { ResumeValues } from "./schema.zod";
 
-export const RESUME = {
+export const RESUME: Partial<ResumeValues> = {
     firstName: "Nandkishor",
     lastName: "Kumawat",
     jobTitle: "Enthusiastic Software Developer",
@@ -70,7 +70,7 @@ export const RESUME = {
         "Windows", "AutoCAD", "Fusion 360", "STAAD Pro", "Word", "PowerPoint",
         "Excel", "Visual Studio Code", "PyCharm", "Atom", "MongoDB", "GitHub",
         "Azure DevOps"
-    ],
+    ].map(skill => ({ skill, level: 'Expert' })),
     projects: [
         {
             title: "Kalyan-Hospital",
@@ -176,5 +176,5 @@ export const RESUME = {
     city: "Jaipur",
     country: "India",
     customSections: [],
-    fieldsOrder: []
-} satisfies ResumeValues;
+    fieldsOrder: [],
+}
