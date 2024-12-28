@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
-import React from 'react'
+import React, { useState } from 'react'
 import { steps } from './steps';
-import { CircleCheck, Download, FileUserIcon, PenLineIcon } from 'lucide-react';
+import { CircleCheck, Download, FileUserIcon, Loader, PenLineIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useResume } from '@/hooks';
@@ -36,8 +36,10 @@ const Footer: React.FC<FooterProps> = ({
     }
 
     const { resumeData } = useResume();
+    const [isLoading, setIsLoading] = useState(false)
 
     const downloadPdf = async () => {
+        setIsLoading(true)
         const pdfBlob = await fetch('/api/generate-pdf', {
             method: 'POST',
             headers: {
@@ -50,6 +52,7 @@ const Footer: React.FC<FooterProps> = ({
         a.href = url;
         a.download = 'resume.pdf';
         a.click();
+        setIsLoading(false)
     }
 
 
@@ -90,8 +93,9 @@ const Footer: React.FC<FooterProps> = ({
                     size="icon"
                     onClick={downloadPdf}
                     title="Download resume"
+                    disabled={isLoading}
                 >
-                    <Download />
+                    {isLoading ? <Loader className="size-4 animate-spin" /> : <Download />}
                 </Button>
 
                 <div className="flex items-center gap-3">
@@ -105,7 +109,7 @@ const Footer: React.FC<FooterProps> = ({
                     >
                         {isSaving ? (
                             <>
-                                <CircleCheck className="size-4 animate-spin" />
+                                <Loader className="size-4 animate-spin" />
                                 <span>Saving...</span>
                             </>
                         ) : hasUnsavedChanges ? (

@@ -63,7 +63,9 @@ const AccountDialog = ({
                         <div>
                             <p className="text-sm font-medium text-gray-700 mb-2">Connected accounts</p>
                             <div className="flex items-center">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" alt="Google" className="w-5 h-5 mr-2" />
+                                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white">
+                                    G
+                                </div>
                                 <p className="text-sm">Google - up8560001@gmail.com</p>
                             </div>
                         </div>

@@ -55,7 +55,7 @@ export default function SignUpPage() {
                                 {...register("name")}
                                 type="text"
                                 placeholder="Name"
-                                className="border-gray-300 rounded-md focus:ring focus:ring-blue-500"
+                                aria-invalid={!!errors.name}
                             />
                             {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
                         </div>
@@ -65,7 +65,7 @@ export default function SignUpPage() {
                                 {...register("email")}
                                 type="email"
                                 placeholder="Email"
-                                className="border-gray-300 rounded-md focus:ring focus:ring-blue-500"
+                                aria-invalid={!!errors.email}
                             />
                             {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
                         </div>
@@ -75,7 +75,7 @@ export default function SignUpPage() {
                                 {...register("password")}
                                 type="password"
                                 placeholder="Password"
-                                className="border-gray-300 rounded-md focus:ring focus:ring-blue-500"
+                                aria-invalid={!!errors.password}
                             />
                             {errors.password && (
                                 <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
@@ -87,7 +87,7 @@ export default function SignUpPage() {
                                 {...register("confirmPassword")}
                                 type="password"
                                 placeholder="Confirm Password"
-                                className="border-gray-300 rounded-md focus:ring focus:ring-blue-500"
+                                aria-invalid={!!errors.confirmPassword}
                             />
                             {errors.confirmPassword && (
                                 <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>
