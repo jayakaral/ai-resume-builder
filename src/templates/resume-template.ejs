@@ -11,10 +11,14 @@
       height:100%;
       zoom: 1
     }
+    section {
+      margin-top:0.5rem
+    }
   </style>
 </head>
 <body>
   <div class="aspect-[210/297] h-fit w-full bg-white text-black text-justify" id="resume">
+
     <div class="text-center text-2xl uppercase"><%= firstName %> <%= lastName||'' %></div>
     <div class="flex gap-3 text-sm">
       <% if (email) { %>
@@ -25,19 +29,20 @@
       <% } %>
     </div>
 
-    <main class="space-y-2">
 
       <% if (summary) { %>
         <section>
-          <div class="text-lg border-b">Summary</div>
-          <div class="text-sm"><%= summary %></div>
+          <div class="text-lg border-b uppercase">Summary</div>
+          <div className="space-y-1">
+            <div class="text-sm"><%= summary %></div>
+          </div>
         </section>
       <% } %>
 
       <% fieldsOrder.forEach(function(field) { %>
         <% if (field === 'educations' && educations.length) { %>
           <section>
-            <div class="text-lg border-b">Education</div>
+            <div class="text-lg border-b uppercase">Education</div>
             <div class="space-y-1">
               <% educations.forEach(function(education) { %>
                 <div>
@@ -54,7 +59,7 @@
 
         <% if (field === 'workExperiences' && workExperiences.length) { %>
           <section>
-            <div class="text-lg border-b">Work Experience</div>
+            <div class="text-lg border-b uppercase">Work Experience</div>
             <div class="space-y-1">
               <% workExperiences.forEach(function(experience) { %>
                 <div>
@@ -72,7 +77,7 @@
 
         <% if (field === 'projects' && projects.length) { %>
           <section>
-            <div class="text-lg border-b">Projects</div>
+            <div class="text-lg border-b uppercase">Projects</div>
             <div class="space-y-1">
               <% projects.forEach(function(project) { %>
                 <div>
@@ -89,9 +94,11 @@
 
         <% if (field === 'skills' && skills.length) { %>
           <section>
-            <div class="text-lg border-b">Skills</div>
-            <div class="text-xs text-justify">
-              <%= skills.map(s=>s.skill).filter(Boolean).join(", ") %>
+            <div class="text-lg border-b uppercase">Skills</div>
+            <div className="space-y-1">
+              <div class="text-xs text-justify">
+                <%= skills.map(s=>s.skill).filter(Boolean).join(", ") %>
+              </div>
             </div>
           </section>
         <% } %>
@@ -99,10 +106,10 @@
 
       <% customSections.forEach(function(section){%>
         <section>
-          <div class="text-lg border-b"><%=section.title%></div>
+          <div class="text-lg border-b uppercase"><%=section.title%></div>
           <div class="space-y-1">
             <% section.items.forEach(function(item) { %>
-              <div>
+              <div class='mt-1'>
                 <div class="flex justify-between">
                   <div class="text-sm"><%= item.title %></div>
                   <div class="text-xs font-semibold"><%= item.startDate %> - <%= item.endDate || "Present" %></div>
@@ -113,7 +120,6 @@
           </div>
         </section>
       <% }); %>
-    </main>
   </div>
 </body>
 </html>

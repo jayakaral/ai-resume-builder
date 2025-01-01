@@ -61,33 +61,31 @@ const Template = ({
                 {phone && <div>{phone}</div>}
             </div>
 
-            <main className="space-y-2">
 
-                {SummarySection(summary)}
+            {SummarySection(summary)}
 
-                {fieldsOrder?.map((field) => (
-                    <React.Fragment key={field}>
-                        {field === "workExperiences" && WorkExperienceSection(workExperiences)}
-                        {field === "educations" && EducationSection(educations)}
-                        {field === "skills" && SkillsSection(skills)}
-                        {field === "projects" && ProjectSection(projects)}
-                    </React.Fragment>
-                ))}
+            {fieldsOrder?.map((field) => (
+                <React.Fragment key={field}>
+                    {field === "workExperiences" && WorkExperienceSection(workExperiences)}
+                    {field === "educations" && EducationSection(educations)}
+                    {field === "skills" && SkillsSection(skills)}
+                    {field === "projects" && ProjectSection(projects)}
+                </React.Fragment>
+            ))}
 
-                {customSections?.map((section, index) => (
-                    <Section title={section.title} key={index}>
-                        {section.items.map((d, index) => (
-                            <div key={index} className="mt-1">
-                                <div className="flex justify-between">
-                                    <div className="text-sm">{d.title}</div>
-                                    <div className="text-xs font-semibold">{d.startDate} - {d.endDate}</div>
-                                </div>
-                                <div className="text-xs">{d.description}</div>
+            {customSections?.map((section, index) => (
+                <Section title={section.title} key={index}>
+                    {section.items.map((d, index) => (
+                        <div key={index} className="mt-1">
+                            <div className="flex justify-between single">
+                                <div className="text-sm">{d.title}</div>
+                                <div className="text-xs font-semibold">{d.startDate} - {d.endDate}</div>
                             </div>
-                        ))}
-                    </Section>
-                ))}
-            </main>
+                            <div className="text-xs">{d.description}</div>
+                        </div>
+                    ))}
+                </Section>
+            ))}
         </div>
     )
 }
@@ -96,7 +94,7 @@ export default Template
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => {
     return (
-        <section>
+        <section className='mt-2'>
             <h2 className="text-lg border-b uppercase">{title || 'Untitled'}</h2>
             <div className="space-y-1">
                 {children}
@@ -155,7 +153,7 @@ const ProjectSection = (projects: ResumeValues["projects"]) => {
         <Section title="Projects">
             {projects.map((project, index) => (
                 <div key={index} className="">
-                    <div className="flex justify-between">
+                    <div className="flex justify-between single">
                         <div className="text-sm">{project.title}</div>
                         <div className="text-xs font-semibold">{project.startDate} - {project.endDate ?? "Present"}</div>
                     </div>

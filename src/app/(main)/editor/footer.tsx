@@ -94,6 +94,7 @@ const Footer: React.FC<FooterProps> = ({
                     onClick={downloadPdf}
                     title="Download resume"
                     disabled={isLoading}
+                    className='hidden'
                 >
                     {isLoading ? <Loader className="size-4 animate-spin" /> : <Download />}
                 </Button>
