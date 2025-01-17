@@ -9,14 +9,10 @@ const Layout = async ({
     children: React.ReactNode;
 }) => {
     const { session, user } = await auth();
-
-    if (session && user) {
-        redirect('/');
-    }
-
+    if (session && user) redirect('/');
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900">
+        <div className="flex items-center justify-center min-h-dvh p-2 bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-800 dark:to-gray-900">
             {children}
         </div>
     )

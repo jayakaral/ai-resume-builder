@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="h-dvh flex flex-col overflow-hidden">
+    <div className="h-dvh flex flex-col md:overflow-hidden overflow-auto">
       <Navbar />
       <main className="flex flex-1 flex-col items-center justify-center gap-6 bg-gray-100 dark:bg-gray-800 dark:text-gray-100 px-5 py-12 text-center text-gray-900 md:flex-row md:text-start lg:gap-12">
         <div className="max-w-prose space-y-3">
