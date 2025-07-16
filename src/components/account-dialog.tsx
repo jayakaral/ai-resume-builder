@@ -17,7 +17,7 @@ const AccountDialog = ({
 }: AccountDialogProps) => {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogContent className="max-w-3xl p-6 bg-white rounded-lg shadow-lg min-h-[75dvh]">
+            <DialogContent className="max-w-3xl p-6 rounded-lg shadow-lg min-h-[75dvh]">
                 <DialogHeader className="hidden">
                     <DialogTitle>Account</DialogTitle>
                 </DialogHeader>
@@ -27,11 +27,11 @@ const AccountDialog = ({
                     <div className="w-1/4 pr-4">
                         <div className='mb-6'>
                             <h2 className='font-semibold text-xl'>Account</h2>
-                            <p className='text-xs text-gray-400'>manage your account info</p>
+                            <p className='text-xs'>manage your account info</p>
                         </div>
                         <ul className="space-y-2">
-                            <li className="font-medium text-gray-700 cursor-pointer">Profile</li>
-                            <li className="font-medium text-gray-700 cursor-pointer">Security</li>
+                            <li className="font-medium cursor-pointer">Profile</li>
+                            <li className="font-medium cursor-pointer">Security</li>
                         </ul>
                     </div>
 
@@ -41,29 +41,29 @@ const AccountDialog = ({
 
                         <div className="flex items-center">
                             {/* Profile Icon */}
-                            <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-xl font-semibold text-white">
+                            <div className="w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold">
                                 U
                             </div>
 
                             {/* Profile Name and Update Button */}
                             <div className="ml-4">
-                                <p className="text-sm font-medium text-gray-700">Unknown Person</p>
+                                <p className="text-sm font-medium">Unknown Person</p>
                                 <button className="text-sm text-blue-500 hover:underline">Update profile</button>
                             </div>
                         </div>
 
                         {/* Email Section */}
                         <div className="space-y-1">
-                            <p className="text-sm font-medium text-gray-700">Email addresses</p>
-                            <p className="text-sm">up8560001@gmail.com <span className="text-xs text-gray-500">(Primary)</span></p>
-                            <button className="text-sm text-blue-500 hover:underline">+ Add email address</button>
+                            <p className="text-sm font-medium">Email addresses</p>
+                            <p className="text-sm">up8560001@gmail.com <span className="text-xs">(Primary)</span></p>
+                            <button className="text-sm hover:underline">+ Add email address</button>
                         </div>
 
                         {/* Connected Accounts */}
                         <div>
-                            <p className="text-sm font-medium text-gray-700 mb-2">Connected accounts</p>
+                            <p className="text-sm font-medium mb-2">Connected accounts</p>
                             <div className="flex items-center">
-                                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white">
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center">
                                     G
                                 </div>
                                 <p className="text-sm">Google - up8560001@gmail.com</p>

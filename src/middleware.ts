@@ -16,18 +16,24 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const res = await fetch(`${baseUrl}/api/auth/session`, {
-    headers: {
-      cookie: req.headers.get('cookie') as string || ''
+  try {
+    const res = await fetch(`${baseUrl}/api/auth/session`, {
+      headers: {
+        cookie: req.headers.get('cookie') as string || ''
+      }
+    })
+    const { user } = await res.json();
+
+    if (!user && !publicRoutes.includes(pathname)) {
+      return NextResponse.redirect(new URL(`/sign-in?callbackUrl=${pathname}`, req.url))
     }
-  })
-  const { user } = await res.json();
 
-  if (!user && !publicRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL(`/sign-in?callbackUrl=${pathname}`, req.url))
+    return NextResponse.next();
+  } catch (error) {
+    console.error("Error in middleware:", error);
+    return NextResponse.redirect(`${baseUrl}/sign-in`);
+
   }
-
-  return NextResponse.next();
 }
 
 export const config = {

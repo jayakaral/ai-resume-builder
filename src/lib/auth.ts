@@ -3,7 +3,7 @@ import { sha256 } from "@oslojs/crypto/sha2";
 import prisma from "./prisma";
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { Session, User } from "@prisma/client";
+import { Session, User } from "@/generated/prisma";
 
 export const generateSessionToken = (): string => {
     const bytes = new Uint8Array(20);
@@ -59,12 +59,8 @@ export const validateSessionToken = async (token: string): Promise<SessionValida
             id: sessionId
         },
         include: {
-            user: {
-                omit: {
-                    password: true
-                }
-            }
-        }
+            user: true
+        },
     });
 
     if (!result) {

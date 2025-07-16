@@ -7,7 +7,6 @@ import { generalInfoSchema, GeneralInfoValues } from '@/lib/schema.zod';
 import { EditorFormProps } from '@/lib/types';
 import FieldsOrder from './fields-order';
 import ResumeEnhancerForm from '../resume-enhancer';
-import { MarginUnit } from '@prisma/client';
 import MarginSection from './marginSection';
 
 

@@ -2,13 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { redirect } from "next/navigation";
 import { signUp } from "../actions";
 import Link from "next/link";
+import { useState } from "react";
 
 const signUpSchema = z
     .object({
@@ -28,17 +35,20 @@ export default function SignUpPage() {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<SignUpFormData>({
         resolver: zodResolver(signUpSchema),
     });
 
+    const [error, setError] = useState("");
+
     async function onSubmit(data: SignUpFormData) {
+        setError("");
         const result = await signUp(data.name, data.email, data.password);
         if (!result.error) {
             redirect("/resumes");
         } else {
-            console.error("Sign-up failed:", result.error);
+            setError(result.error);
         }
     }
 
@@ -57,7 +67,9 @@ export default function SignUpPage() {
                                 placeholder="Name"
                                 aria-invalid={!!errors.name}
                             />
-                            {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
+                            {errors.name && (
+                                <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+                            )}
                         </div>
 
                         <div>
@@ -67,7 +79,9 @@ export default function SignUpPage() {
                                 placeholder="Email"
                                 aria-invalid={!!errors.email}
                             />
-                            {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+                            {errors.email && (
+                                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+                            )}
                         </div>
 
                         <div>
@@ -90,19 +104,24 @@ export default function SignUpPage() {
                                 aria-invalid={!!errors.confirmPassword}
                             />
                             {errors.confirmPassword && (
-                                <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>
+                                <p className="text-sm text-red-500 mt-1">
+                                    {errors.confirmPassword.message}
+                                </p>
                             )}
                         </div>
                     </div>
+
+                    {error && (
+                        <p className="text-sm text-red-500 text-center mt-4">{error}</p>
+                    )}
                 </CardContent>
+
                 <CardFooter className="flex flex-col gap-4">
-                    <Button type="submit" className="w-full">
-                        Sign Up
+                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                        {isSubmitting ? "Signing up..." : "Sign Up"}
                     </Button>
                     <Button variant="outline" className="w-full" asChild>
-                        <Link href="/sign-in">
-                            Already have an account? Sign In
-                        </Link>
+                        <Link href="/sign-in">Already have an account? Sign In</Link>
                     </Button>
                 </CardFooter>
             </form>
